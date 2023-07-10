@@ -1,25 +1,24 @@
-import React from "react";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchGreeting = createAsyncThunk(
-  "greeting/fetchGreeting",
+  'greeting/fetchGreeting',
   async () => {
-    const response = await fetch(`api/greeting`);
+    const response = await fetch('api/greeting');
     const data = await response.json();
     if (response.status < 200 || response.status >= 300) {
-      return fails;
+      return 'fails';
     }
     return data;
-  }
+  },
 );
 
 const initialState = {
-  message: "",
+  message: '',
   isLoading: true,
 };
 
 export const GreetingSlice = createSlice({
-  name: "greeting",
+  name: 'greeting',
   initialState,
   extraReducers: (builder) => {
     builder
@@ -27,13 +26,11 @@ export const GreetingSlice = createSlice({
         ...state,
         isLoading: true,
       }))
-      .addCase(fetchGreeting.fulfilled, (state, action) => {
-        return {
-          ...state,
-          isLoading: false,
-          message: action.payload.message,
-        };
-      })
+      .addCase(fetchGreeting.fulfilled, (state, action) => ({
+        ...state,
+        isLoading: false,
+        message: action.payload.message,
+      }))
       .addCase(fetchGreeting.rejected, (state) => ({
         ...state,
         isLoading: false,
